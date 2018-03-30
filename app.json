@@ -1,12 +1,11 @@
 {
-  "name": "Flask Heroku Sample",
-  "description": "A sample Flask app on Heroku",
+  "name": "Form Test",
+  "description": "A form app built with Flask on Heroku",
   "keywords": [
     "flask",
     "python",
-    "sample"
   ],
-  "repository": "https://github.com/yefim/flask-heroku-sample",
+  "repository": "https://github.com/dgriff03/form_test",
   "addons": [
     "heroku-postgresql"
   ]

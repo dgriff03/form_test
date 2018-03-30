@@ -34,11 +34,12 @@ button {
   width: 100%;
 }
 
-form {
+.signup-form {
   border: 1px solid #444;
   max-width: 100%;
   padding: 20px;
-  width: 400px;
+  max-width: 600px;
+  margin: auto;
 }
 
 button {
@@ -53,4 +54,10 @@ button {
 button:hover {
   background: #444;
   color: #fff;
+}
+
+
+.signup-label {
+  margin: 12px 0;
+  color: rgba(0,0,0,0.54);
 }

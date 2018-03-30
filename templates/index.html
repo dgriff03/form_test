@@ -1,17 +1,17 @@
 {% extends "layout.html" %}
 
 {% block body %}
-  <h1>Add a user</h1>
-  <form action="{{ url_for('user') }}" method="post">
-    <label for="first_name">First Name</label>
+  <h1>Candidate Sign-up Form</h1>
+  <form class="signup-form" action="{{ url_for('user') }}" method="post">
+    <label class="signup-label" for="first_name">First Name</label>
     <input id="first_name" type="text" name="first_name" placeholder="John" required />
-    <label for="last_name">Last Name</label>
+    <label class="signup-label" for="last_name">Last Name</label>
     <input id="last_name" type="text" name="last_name" placeholder="Smith" required />
-    <label for="email">Email</label>
+    <label class="signup-label" for="email">Email</label>
     <input id="email" type="email" name="email" placeholder="j.smith@example.com" required />
 
 
-    <label for="race_ethnicity">Race/Ethnicity:</label>
+    <label class="signup-label" for="race_ethnicity">Race/Ethnicity:</label>
     <select name="race" id="race_ethnicity">
       <option value="">Select one</option>
       <option value="American Indian or Alaska Native">American Indian or Alaska Native</option>
@@ -23,10 +23,10 @@
       <option value="Two or more races">Two or more races</option>
     </select>
 
-    <label for="age">Age:</label>
+    <label class="signup-label" for="age">Age:</label>
     <input type="number" name="age" id="age" value="" size="3" maxlength="3">
 
-    <label for="edu">Education:</label>
+    <label class="signup-label" for="edu">Education:</label>
     <select name="edu" id="edu">
       <option value="">Select one</option>
       <option value="Some High School">Some High School</option>
@@ -37,14 +37,14 @@
       <option value="Graduate School Degree">Graduate School Degree</option>
     </select>
 
-    <label for="gender">Gender:</label>
+    <label class="signup-label" for="gender">Gender:</label>
     <select name="gender" id="gender">
       <option value="">Select one</option>
       <option value="English">Male</option>
       <option value="Other">Female</option>
     </select>
 
-    <label for="lang">First language:</label>
+    <label class="signup-label" for="lang">First language:</label>
     <select name="lang" id="lang">
       <option value="">Select one</option>
       <option value="English">English</option>
@@ -52,14 +52,10 @@
     </select>
 
     <!-- Would need to add some TAC :) -->
-    <label for="tac">Agree to the terms and condition:</label>
+    <label class="signup-label" for="tac">Agree to the terms and condition:</label>
     <input type="checkbox" value="true" id="tac" name="tac">
 
 
-    <button type="submit">Save</button>
+    <button type="submit">Create Account</button>
   </form>
-  <h2>List of users</h2>
-  {% for u in users %}
-    <p>{{ u.first_name }} -- {{ u.last_name }}</p>
-  {% endfor %}
 {% endblock %}

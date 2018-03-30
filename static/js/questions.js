@@ -1,4 +1,4 @@
-const TIME_PER_QUESTION = 1 * 5 * 1000;
+const TIME_PER_QUESTION = 3 * 60 * 1000;
 
 let eval_id;
 let question_list;

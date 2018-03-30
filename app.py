@@ -5,6 +5,8 @@ import os
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 
+# TODO(Daniel): SWITCH ALL prints to logging.
+
 
 app = Flask(__name__)
 
@@ -100,7 +102,6 @@ def validate_email(email):
 # Returns a Candidate object if the form data is valid, otherwise returns None.
 # TODO(daniel): Return which fields caused the error.
 def candidate_from_form(form):
-  print form
   for field in REQUIRED_CANDIDATE_FIELDS:
     if field not in form or not form[field]:
       print "error on {}".format(field)

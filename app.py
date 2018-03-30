@@ -1,4 +1,5 @@
 import datetime
+import json
 import os
 
 from flask import Flask, render_template, request, redirect, url_for
@@ -144,6 +145,15 @@ def user():
   # db.session.flush()
   # db.session.refresh(candidate)
   return redirect(url_for('index'))
+
+
+# TODO(Daniel): Should probably obfuscate the user id at some point...
+@app.route('/exam/<candidate_id>', methods=['GET'])
+def exam(candidate_id):
+  return render_template('question.html',
+    candidate_id=candidate_id,
+    question_list=QUESTION_LIST,
+    num_questions=len(QUESTION_LIST))
 
 
 # Data format:

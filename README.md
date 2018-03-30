@@ -11,7 +11,7 @@ Things that still need to be added:
 - Database setup for questions flows rather than 1 hard coded list
 - Some sense of security (form auth token for cross-site request forgery protection, obfuscate form ids)
 - Client side validation on sign-up flow.
-
+- Prevent the same exam from being taken twice...
 
 
 Note, original app cloned from:

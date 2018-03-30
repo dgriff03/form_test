@@ -1,4 +1,4 @@
-const TIME_PER_QUESTION = 3 * 60 * 1000;
+const TIME_PER_QUESTION = 1 * 5 * 1000;
 
 let eval_id;
 let question_list;
@@ -9,11 +9,15 @@ const answers = [];
 
 let interval_id = 0;
 
-function complete() {
+function cleanup() {
     if (interval_id) {
         clearInterval(interval_id);
         interval_id = 0;
     }
+}
+
+function complete() {
+    cleanup();
     let data = {};
     data['eval_id'] = eval_id;
     data['answers'] = answers;
@@ -30,6 +34,7 @@ function complete() {
 }
 
 function next() {
+    cleanup();
     answers.push($('#question_answer').val());
     $('#question_answer').val('');
     let last_question = question_list.length -1;
@@ -59,21 +64,13 @@ function format_time_string(milliseconds) {
 
 
 function start_timer() {
-    if (interval_id) {
-        clearInterval(interval_id);
-        interval_id = 0;
-    }
+    cleanup();
     let end_time = TIME_PER_QUESTION + Date.now();
-
     interval_id = setInterval(() => {
-        const time_remaining = end_time - Date.now();
+        const time_remaining = end_time - Date.now() + 1;
         if (time_remaining <= 0) {
             next();
-            interval_id = 0;
-            clearInterval(interval_id);
-            return;
         }
         $('#time-remaining').text(format_time_string(time_remaining));
     }, 100);
-
 }

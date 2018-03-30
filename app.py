@@ -141,17 +141,22 @@ def user():
     return redirect(url_for('index'))
   db.session.add(candidate)
   db.session.commit()
-  # Refirect to the format page -- pass the candidate ID!!!
-  # db.session.flush()
-  # db.session.refresh(candidate)
-  return redirect(url_for('index'))
+  db.session.flush()
+  db.session.refresh(candidate)
+  evaluation = Evaluation()
+  evaluation.candidate_id = candidate.id
+  db.session.add(evaluation)
+  db.session.commit()
+  db.session.flush()
+  db.session.refresh(evaluation)
+  return redirect('/exam/{}'.format(evaluation.id))
 
 
-# TODO(Daniel): Should probably obfuscate the user id at some point...
-@app.route('/exam/<candidate_id>', methods=['GET'])
-def exam(candidate_id):
+# TODO(Daniel): Should probably obfuscate the eval id at some point...
+@app.route('/exam/<eval_id>', methods=['GET'])
+def exam(eval_id):
   return render_template('question.html',
-    candidate_id=candidate_id,
+    eval_id=eval_id,
     question_list=QUESTION_LIST,
     num_questions=len(QUESTION_LIST))
 
@@ -163,21 +168,25 @@ def exam(candidate_id):
 # }
 @app.route('/evaluation', methods=['POST'])
 def evaluation():
-  if 'eval_id' not in request.form:
+  data = request.get_json()
+  print data
+  if 'eval_id' not in data:
     print "Missing eval_id"
-    return redirect(url_for('index'))
-  if 'answers' not in request.form or len(request.form['answers']) != len(QUESTION_LIST):
-    print "Missing answers"
-    return redirect(url_for('index'))
+    return json.dumps({'success': False}), 400, {'ContentType':'application/json'} 
+  answers = data['answers']
+  print answers
+  if len(answers) < len(QUESTION_LIST):
+    print "Bad answer length"
+    return json.dumps({'success': False}), 400, {'ContentType':'application/json'} 
   eval_id = int(request.form['eval_id'])
   evaluation = Evaluation.query.get(eval_id)
   if not evaluation:
     print "Missing eval_id"
-    return redirect(url_for('index'))
+    return json.dumps({'success': False}), 400, {'ContentType':'application/json'} 
   evaluation.completed = datetime.datetime.utcnow()
   db.session.commit()
   add_questions(eval_id, request.form['answers'])
-  return redirect(url_for('index'))
+  return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
 
 
 

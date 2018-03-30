@@ -33,7 +33,7 @@
 
 <script>
   $( document ).ready(() => {
-    candidate_id = {{candidate_id}};
+    eval_id = {{eval_id}};
     // TODO(Daniel): Pass list in a better way that doesn't require special char.
     question_list = '{{ "; ".join(question_list) }}'.split(';');
     start_timer();

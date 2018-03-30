@@ -1,4 +1,4 @@
-let candidate_id;
+let eval_id;
 let question_list;
 
 let current_question = 0;
@@ -6,14 +6,24 @@ let current_question = 0;
 const answers = [];
 
 function restart_timer() {
-    
+
 }
 
 function complete() {
     console.log(answers);
-    // POST DATA
+    let data = {};
+    data['eval_id'] = eval_id;
+    data['answers'] = answers;
+    $.ajax({
+      type: "POST",
+      url: '/evaluation',
+      data: JSON.stringify(data),
+      contentType: 'application/json',
+    });
+    // TODO(Daniel): Show an error on failure.
     $('#exam-form').hide();
     $('#complete').show();
+
 }
 
 function next() {

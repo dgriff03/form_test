@@ -11,23 +11,32 @@
 
 {% block body %}
 
-<div class="header">
-  <div class="question-count">
-    Question <span id="current-question-count">1</span> of {{num_questions}}
+<div id="exam-form">
+  <div class="header">
+    <div class="question-count">
+      Question <span id="current-question-count">1</span> of {{num_questions}}
+    </div>
+    <div class="counter" id="time-remaining">03:00</div>
   </div>
-  <div class="counter" id="time-remaining"></div>
+
+  <div class="question-title" id="question-title">{{question_list[0]}}</div>
+  <textarea id="question_answer" rows="10" cols="75" class="answer-textarea"></textarea>
+
+  <div class="next-button-container">
+  <div class="next-button" id="next-button" onclick="next()">NEXT</div>
+  </div>
 </div>
-
-<div class="question-title" id="question-title">{{question_list[0]}}</div>
-<textarea id="question_answer" rows="10" cols="75" class="answer-textarea"></textarea>
-
-<div class="next-button" id="next-button">NEXT</div>
+<div id="complete" style="display: none;">
+  <h1>Congrats on completing the form</h1>
+  <p>Please close the window at this time.</p>
+</div>
 
 <script>
   $( document ).ready(() => {
-    const candidate_id = {{candidate_id}};
+    candidate_id = {{candidate_id}};
     // TODO(Daniel): Pass list in a better way that doesn't require special char.
-    const question_list = '{{ "; ".join(question_list) }}'.split(';');
+    question_list = '{{ "; ".join(question_list) }}'.split(';');
+    start_timer();
   });
 </script>
 {% endblock %}

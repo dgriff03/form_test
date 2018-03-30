@@ -1,5 +1,6 @@
 .header {
-
+    display: flex;
+    justify-content: space-between;
 }
 
 .question-count {
@@ -11,10 +12,16 @@
 }
 
 .question-title {
-
+    margin: 16px;
 }
 
+.next-button-container {
+    display: flex;
+    justify-content: center;
+}
 
 .next-button {
-    
+    cursor: pointer;
+    border: 1px solid rgba(0,0,0,0.24);
+    padding: 12px;
 }

@@ -3,14 +3,63 @@
 {% block body %}
   <h1>Add a user</h1>
   <form action="{{ url_for('user') }}" method="post">
-    <label for="name">Name</label>
-    <input id="name" type="text" name="name" placeholder="John Smith" required />
+    <label for="first_name">First Name</label>
+    <input id="first_name" type="text" name="first_name" placeholder="John" required />
+    <label for="last_name">Last Name</label>
+    <input id="last_name" type="text" name="last_name" placeholder="Smith" required />
     <label for="email">Email</label>
     <input id="email" type="email" name="email" placeholder="j.smith@example.com" required />
+
+
+    <label for="race_ethnicity">Race/Ethnicity:</label>
+    <select name="race" id="race_ethnicity">
+      <option value="">Select one</option>
+      <option value="American Indian or Alaska Native">American Indian or Alaska Native</option>
+      <option value="Asian">Asian</option>
+      <option value="Black or African American">Black or African American</option>
+      <option value="Hispanic or Latino">Hispanic or Latino</option>
+      <option value="Native Hawaiian or Other Pacific Islander">Native Hawaiian or Other Pacific Islander</option>
+      <option value="White">White</option>
+      <option value="Two or more races">Two or more races</option>
+    </select>
+
+    <label for="age">Age:</label>
+    <input type="number" name="age" id="age" value="" size="3" maxlength="3">
+
+    <label for="edu">Education:</label>
+    <select name="edu" id="edu">
+      <option value="">Select one</option>
+      <option value="Some High School">Some High School</option>
+      <option value="High School Graduate">High School Graduate</option>
+      <option value="Some College">Some College/University</option>
+      <option value="College Graduate">College/University Graduate</option>
+      <option value="Some Graduate School">Some Graduate School</option>
+      <option value="Graduate School Degree">Graduate School Degree</option>
+    </select>
+
+    <label for="gender">Gender:</label>
+    <select name="gender" id="gender">
+      <option value="">Select one</option>
+      <option value="English">Male</option>
+      <option value="Other">Female</option>
+    </select>
+
+    <label for="lang">First language:</label>
+    <select name="lang" id="lang">
+      <option value="">Select one</option>
+      <option value="English">English</option>
+      <option value="Other">Other</option>
+    </select>
+
+    <!-- Would need to add some TAC :) -->
+    <label for="tac">Agree to the terms and condition:</label>
+    <input type="checkbox" value="true" id="tac" name="tac">
+
+
     <button type="submit">Save</button>
   </form>
   <h2>List of users</h2>
   {% for u in users %}
-    <p>{{ u.name }} -- {{ u.email }}</p>
+    <p>{{ u.first_name }} -- {{ u.last_name }}</p>
   {% endfor %}
 {% endblock %}

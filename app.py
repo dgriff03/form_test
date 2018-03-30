@@ -33,6 +33,24 @@ class Candidate(db.Model):
   def __init__(self):
     self.created = datetime.datetime.utcnow()
 
+class Evaluation(db.Model):
+  id = db.Column(db.Integer, primary_key=True)
+  created = db.Column(db.DateTime)
+  completed = db.Column(db.DateTime)
+  candidate_id = db.Column(db.Integer, db.ForeignKey('candidate.id'))
+
+  def __init__(self):
+    self.created = datetime.datetime.utcnow()
+
+
+class Question(db.Model):
+  id = db.Column(db.Integer, primary_key=True)
+  question_index = db.Column(db.Integer)
+  text = db.Column(db.String(2500))
+  answer = db.Column(db.String(2500))
+  evaluation_id = db.Column(db.Integer, db.ForeignKey('evaluation.id'))
+  evaluation = db.relationship("Evaluation")
+
 
 REQUIRED_CANDIDATE_FIELDS = ['first_name',
                              'last_name',
@@ -43,6 +61,30 @@ REQUIRED_CANDIDATE_FIELDS = ['first_name',
                              'edu',
                              'lang',
                              'tac']
+
+
+# TODO(dgriff): Move this to a database table of "Questions" + table "Survey"
+QUESTION_LIST = [
+  'In your career thus far, what has been your favorite job and least favorite job and why?',
+  'What do you hope to be doing professionally five years from now?',
+  'Please write a sample email to a client asking to follow up on a recent sales call',
+  'Imagine that you are hired to work at a home repair company. Please describe how you would go about generating customers for your new company.',
+  'What is a CRM? What are the greatest benefits of using a CRM?'
+]
+
+
+
+# Length of answers is confirmed to be equal to QUESTION_LIST before calling.
+def add_questions(eval_id, answers):
+  for i, answer in enumerate(answers):
+    q = Question()
+    q.question_index = i
+    q.text = QUESTION_LIST[i]
+    q.answer = answer
+    evaluation_id = eval_id
+    db.session.add(candidate)
+    db.session.commit()
+
 
 # Ballpark approximation for a 'real' email
 def validate_email(email):
@@ -103,7 +145,34 @@ def user():
   # db.session.refresh(candidate)
   return redirect(url_for('index'))
 
+
+# Data format:
+# {
+#  eval_id: <num>
+#  answers : [string...] // In order of questions
+# }
+@app.route('/evaluation', methods=['POST'])
+def evaluation():
+  if 'eval_id' not in request.form:
+    print "Missing eval_id"
+    return redirect(url_for('index'))
+  if 'answers' not in request.form or len(request.form['answers']) != len(QUESTION_LIST):
+    print "Missing answers"
+    return redirect(url_for('index'))
+  eval_id = int(request.form['eval_id'])
+  evaluation = Evaluation.query.get(eval_id)
+  if not evaluation:
+    print "Missing eval_id"
+    return redirect(url_for('index'))
+  evaluation.completed = datetime.datetime.utcnow()
+  db.session.commit()
+  add_questions(eval_id, request.form['answers'])
+  return redirect(url_for('index'))
+
+
+
 if __name__ == '__main__':
   db.create_all()
   port = int(os.environ.get('PORT', 5000))
   app.run(host='0.0.0.0', port=port, debug=True)
+

@@ -1,3 +1,5 @@
+const TIME_PER_QUESTION = 3 * 60 * 1000;
+
 let eval_id;
 let question_list;
 
@@ -5,12 +7,13 @@ let current_question = 0;
 
 const answers = [];
 
-function restart_timer() {
-
-}
+let interval_id = 0;
 
 function complete() {
-    console.log(answers);
+    if (interval_id) {
+        clearInterval(interval_id);
+        interval_id = 0;
+    }
     let data = {};
     data['eval_id'] = eval_id;
     data['answers'] = answers;
@@ -39,11 +42,38 @@ function next() {
     }
     $('#current-question-count').text(current_question + 1);
     $('#question-title').text(question_list[current_question]);
-    restart_timer();
+    start_timer();
+}
+
+function zero_pad(s) {
+    return s.length == 1 ? '0' + s : s;
+}
+
+function format_time_string(milliseconds) {
+    let seconds = milliseconds / 1000;
+    seconds.toFixed(0);
+    let minutes = Math.floor(seconds / 60) + '';
+    seconds = Math.floor(seconds % 60) + '';
+    return zero_pad(minutes) + ':' + zero_pad(seconds);
 }
 
 
 function start_timer() {
+    if (interval_id) {
+        clearInterval(interval_id);
+        interval_id = 0;
+    }
+    let end_time = TIME_PER_QUESTION + Date.now();
 
+    interval_id = setInterval(() => {
+        const time_remaining = end_time - Date.now();
+        if (time_remaining <= 0) {
+            next();
+            interval_id = 0;
+            clearInterval(interval_id);
+            return;
+        }
+        $('#time-remaining').text(format_time_string(time_remaining));
+    }, 100);
 
 }
